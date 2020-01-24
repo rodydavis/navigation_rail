@@ -3,7 +3,7 @@ description: A Navigation Rail for Flutter
 version: 1.0.0
 author: Rody Davis <rody.davis.jr@gmail.com>
 maintainer: Rody Davis (@AppleEducate)
-homepage: https://github.com/fluttercommunity/app_review
+homepage: https://github.com/rodydavis/navigation_rail
 
 environment:
   sdk: ">=2.2.2 <3.0.0"

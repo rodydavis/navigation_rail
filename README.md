@@ -4,7 +4,7 @@ An example of how to use the navigation rail.
 
 Material Spec: https://material.io/components/navigation-rail/
 
-Demo: 
+Demo: https://rodydavis.github.io/navigation_rail/
 
 ## Example
 

@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   navigation_rail:
-    path: ../
+    path: any
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
