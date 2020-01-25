@@ -183,15 +183,18 @@ class NavigationRail extends StatelessWidget {
     if (isDense) {
       return _icon;
     }
-    return Column(
-      children: <Widget>[
-        _icon,
-        Container(height: 4.0),
-        DefaultTextStyle(
-          style: TextStyle(color: _color),
-          child: item?.title,
-        ),
-      ],
+    return InkWell(
+      onTap: () => onTap(tabs.indexOf(item)),
+      child: Column(
+        children: <Widget>[
+          _icon,
+          Container(height: 4.0),
+          DefaultTextStyle(
+            style: TextStyle(color: _color),
+            child: item?.title,
+          ),
+        ],
+      ),
     );
   }
 
