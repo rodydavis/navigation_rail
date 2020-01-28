@@ -160,11 +160,10 @@ class NavigationRail extends StatelessWidget {
   Widget _buildTab(
       bool selected, BuildContext context, BottomNavigationBarItem item) {
     final _theme = Theme.of(context);
+    final _isDark = _theme.brightness == Brightness.dark;
     final _color = selected
-        ? _theme.primaryColor
-        : _theme.brightness == Brightness.dark
-            ? Colors.tealAccent[200]
-            : Colors.grey;
+        ? _isDark ? Colors.tealAccent[200] : _theme.primaryColor
+        : Colors.grey;
     final _iconTheme = IconThemeData(
       color: _color,
       size: _theme.iconTheme.size,

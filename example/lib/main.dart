@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
       theme: _theme(ThemeData.light().copyWith(
         accentColor: Colors.red,
       )),
+      darkTheme: ThemeData.dark(),
       home: MyHomePage(title: 'Navigation Rail Demo'),
     );
   }
