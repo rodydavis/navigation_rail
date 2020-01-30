@@ -46,50 +46,96 @@ class NavigationRail extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (_, dimens) {
-        if (dimens.maxWidth >= desktopBreakpoint &&
-            dimens.maxHeight > minHeight) {
-          return Material(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            child: Row(
-              children: <Widget>[
-                Container(
-                  width: _drawerWidth,
-                  child: _buildDrawer(context, true),
-                ),
-                Expanded(
-                  child: Stack(
-                    alignment: Alignment.topCenter,
-                    children: <Widget>[
-                      Positioned.fill(
-                        child: Scaffold(
-                          appBar: AppBar(
-                            title: title,
-                            actions: actions,
-                            automaticallyImplyLeading: false,
-                          ),
-                          body: body,
-                        ),
-                      ),
-                      if (floatingActionButton != null) ...[
-                        Positioned(
-                          top: kToolbarHeight - kToolbarHeight / 2,
-                          right: kToolbarHeight / 2,
-                          child: floatingActionButton,
-                          width: 50,
-                          height: 50,
-                        )
-                      ],
-                    ],
+    return Directionality(
+      textDirection: Directionality.of(context),
+      child: LayoutBuilder(
+        builder: (_, dimens) {
+          final _direction = Directionality.of(context);
+          final isRtl = _direction == TextDirection.rtl;
+          if (dimens.maxWidth >= desktopBreakpoint &&
+              dimens.maxHeight > minHeight) {
+            return Material(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: _drawerWidth,
+                    child: _buildDrawer(context, true),
                   ),
-                ),
-              ],
-            ),
-          );
-        }
-        if (dimens.maxWidth >= tabletBreakpoint &&
-            dimens.maxHeight > minHeight) {
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: <Widget>[
+                        Positioned.fill(
+                          child: Scaffold(
+                            appBar: AppBar(
+                              title: title,
+                              actions: actions,
+                              automaticallyImplyLeading: false,
+                            ),
+                            body: body,
+                          ),
+                        ),
+                        if (floatingActionButton != null) ...[
+                          Positioned(
+                            top: kToolbarHeight - kToolbarHeight / 2,
+                            right: isRtl ? null : kToolbarHeight / 2,
+                            left: !isRtl ? null : kToolbarHeight / 2,
+                            child: floatingActionButton,
+                            width: 50,
+                            height: 50,
+                          )
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          if (dimens.maxWidth >= tabletBreakpoint &&
+              dimens.maxHeight > minHeight) {
+            return Scaffold(
+              appBar: AppBar(
+                title: title,
+                actions: actions,
+                automaticallyImplyLeading: true,
+              ),
+              drawer: drawerHeaderBuilder != null || drawerFooterBuilder != null
+                  ? _buildDrawer(context, false)
+                  : null,
+              body: Row(
+                children: <Widget>[
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        if (floatingActionButton != null) ...[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: _tabletSpacingVertical,
+                              horizontal: _tabletSpacingHorizontial,
+                            ),
+                            child: floatingActionButton,
+                          ),
+                        ],
+                        for (var tab in tabs) ...[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: _tabletSpacingVertical,
+                              horizontal: _tabletSpacingHorizontial,
+                            ),
+                            child: _buildTab(currentIndex == tabs.indexOf(tab),
+                                context, tab),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  Expanded(child: body),
+                ],
+              ),
+            );
+          }
           return Scaffold(
             appBar: AppBar(
               title: title,
@@ -99,61 +145,21 @@ class NavigationRail extends StatelessWidget {
             drawer: drawerHeaderBuilder != null || drawerFooterBuilder != null
                 ? _buildDrawer(context, false)
                 : null,
-            body: Row(
-              children: <Widget>[
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      if (floatingActionButton != null) ...[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: _tabletSpacingVertical,
-                            horizontal: _tabletSpacingHorizontial,
-                          ),
-                          child: floatingActionButton,
-                        ),
-                      ],
-                      for (var tab in tabs) ...[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: _tabletSpacingVertical,
-                            horizontal: _tabletSpacingHorizontial,
-                          ),
-                          child: _buildTab(
-                              currentIndex == tabs.indexOf(tab), context, tab),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                Expanded(child: body),
-              ],
+            body: body,
+            floatingActionButton: floatingActionButton,
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            bottomNavigationBar: BottomNavigationBar(
+              type: bottomNavigationBarType,
+              backgroundColor: bottomNavigationBarColor,
+              currentIndex: currentIndex,
+              onTap: onTap,
+              items: tabs,
+              unselectedItemColor: bottomNavigationBarUnselectedColor,
+              selectedItemColor: bottomNavigationBarSelectedColor,
             ),
           );
-        }
-        return Scaffold(
-          appBar: AppBar(
-            title: title,
-            actions: actions,
-            automaticallyImplyLeading: true,
-          ),
-          drawer: drawerHeaderBuilder != null || drawerFooterBuilder != null
-              ? _buildDrawer(context, false)
-              : null,
-          body: body,
-          floatingActionButton: floatingActionButton,
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          bottomNavigationBar: BottomNavigationBar(
-            type: bottomNavigationBarType,
-            backgroundColor: bottomNavigationBarColor,
-            currentIndex: currentIndex,
-            onTap: onTap,
-            items: tabs,
-            unselectedItemColor: bottomNavigationBarUnselectedColor,
-            selectedItemColor: bottomNavigationBarSelectedColor,
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 

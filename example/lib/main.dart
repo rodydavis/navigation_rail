@@ -13,7 +13,10 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.red,
       )),
       darkTheme: ThemeData.dark(),
-      home: MyHomePage(title: 'Navigation Rail Demo'),
+      home: Directionality(
+        textDirection: TextDirection.ltr,
+        child: MyHomePage(title: 'Navigation Rail Demo'),
+      ),
     );
   }
 

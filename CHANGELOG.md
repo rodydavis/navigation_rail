@@ -1,3 +1,8 @@
+## [1.0.3]
+
+* Bidirectional for i18n
+* Fixes: https://github.com/rodydavis/navigation_rail/issues/2
+
 ## [1.0.2]
 
 * Fix Tablet Colors
