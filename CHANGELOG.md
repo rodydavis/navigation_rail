@@ -1,3 +1,7 @@
+## [1.0.4]
+
+* Fixed isDense Tap Target
+
 ## [1.0.3]
 
 * Bidirectional for i18n

@@ -178,15 +178,19 @@ class NavigationRail extends StatelessWidget {
     final _icon = Align(
       alignment: Alignment.topCenter,
       heightFactor: 1.0,
-      child: Container(
-        child: IconTheme(
-          data: _iconTheme,
-          child: selected ? item.activeIcon : item.icon,
-        ),
+      child: IconTheme(
+        data: _iconTheme,
+        child: selected ? item.activeIcon : item.icon,
       ),
     );
     if (isDense) {
-      return _icon;
+      return InkWell(
+        onTap: () => onTap(tabs.indexOf(item)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: _icon,
+        ),
+      );
     }
     return InkWell(
       onTap: () => onTap(tabs.indexOf(item)),
