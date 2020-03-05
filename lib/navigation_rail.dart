@@ -114,12 +114,12 @@ class NavigationRail extends StatelessWidget {
                       children: <Widget>[
                         if (floatingActionButton != null)
                           Container(
-                            padding: const EdgeInsets.only(top: 8.0),
+                            padding: const EdgeInsets.only(top: _tabletSpacingVertical),
                             width: _railSize,
                             height: _railSize,
                             child: Center(child: floatingActionButton),
                           ),
-                        Container(padding: const EdgeInsets.only(top: 8.0)),
+                        Container(padding: const EdgeInsets.only(top: _tabletSpacingVertical)),
                         for (var tab in tabs)
                           _buildTab(currentIndex == tabs.indexOf(tab),
                               context, tab),
