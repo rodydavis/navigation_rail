@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 const _tabletBreakpoint = 720.0;
 const _desktopBreakpoint = 1440.0;
 const _minHeight = 400.0;
-const _tabletSpacingVertical = 15.0;
-const _tabletSpacingHorizontial = 10.0;
+const _tabletSpacingVertical = 8.0;
+const _tabletSpacingHorizontal = 10.0;
 const _drawerWidth = 304.0;
+const _railSize = 72.0;
+const _denseRailSize = 56.0;
 
 class NavigationRail extends StatelessWidget {
   final FloatingActionButton floatingActionButton;
@@ -107,27 +109,20 @@ class NavigationRail extends StatelessWidget {
               body: Row(
                 children: <Widget>[
                   Container(
+                    width: isDense ? _denseRailSize : _railSize,
                     child: Column(
                       children: <Widget>[
-                        if (floatingActionButton != null) ...[
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: _tabletSpacingVertical,
-                              horizontal: _tabletSpacingHorizontial,
-                            ),
-                            child: floatingActionButton,
+                        if (floatingActionButton != null)
+                          Container(
+                            padding: const EdgeInsets.only(top: _tabletSpacingVertical),
+                            width: _railSize,
+                            height: _railSize,
+                            child: Center(child: floatingActionButton),
                           ),
-                        ],
-                        for (var tab in tabs) ...[
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: _tabletSpacingVertical,
-                              horizontal: _tabletSpacingHorizontial,
-                            ),
-                            child: _buildTab(currentIndex == tabs.indexOf(tab),
-                                context, tab),
-                          ),
-                        ],
+                        Container(padding: const EdgeInsets.only(top: _tabletSpacingVertical)),
+                        for (var tab in tabs)
+                          _buildTab(currentIndex == tabs.indexOf(tab),
+                              context, tab),
                       ],
                     ),
                   ),
@@ -184,25 +179,41 @@ class NavigationRail extends StatelessWidget {
       ),
     );
     if (isDense) {
-      return InkWell(
-        onTap: () => onTap(tabs.indexOf(item)),
+      return Container(
+        height: _denseRailSize,
+        width: _denseRailSize,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: _icon,
+          padding: const EdgeInsets.all(4.0),
+          child: InkWell(
+            onTap: () => onTap(tabs.indexOf(item)),
+            child: Center(
+              child: _icon,
+            ),
+          ),
         ),
       );
     }
-    return InkWell(
-      onTap: () => onTap(tabs.indexOf(item)),
-      child: Column(
-        children: <Widget>[
-          _icon,
-          Container(height: 4.0),
-          DefaultTextStyle(
-            style: TextStyle(color: _color),
-            child: item?.title,
+    return Container(
+      height: _railSize,
+      width: _railSize,
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: InkWell(
+          onTap: () => onTap(tabs.indexOf(item)),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _icon,
+                Container(height: 4.0),
+                DefaultTextStyle(
+                  style: TextStyle(color: _color),
+                  child: item?.title,
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
