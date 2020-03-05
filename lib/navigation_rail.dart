@@ -4,7 +4,7 @@ const _tabletBreakpoint = 720.0;
 const _desktopBreakpoint = 1440.0;
 const _minHeight = 400.0;
 const _tabletSpacingVertical = 8.0;
-const _tabletSpacingHorizontial = 10.0;
+const _tabletSpacingHorizontal = 10.0;
 const _drawerWidth = 304.0;
 
 class NavigationRail extends StatelessWidget {
@@ -113,7 +113,7 @@ class NavigationRail extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                               vertical: _tabletSpacingVertical * 2,
-                              horizontal: _tabletSpacingHorizontial,
+                              horizontal: _tabletSpacingHorizontal,
                             ),
                             child: floatingActionButton,
                           ),
@@ -196,7 +196,7 @@ class NavigationRail extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: _tabletSpacingVertical,
-          horizontal:_tabletSpacingHorizontial,
+          horizontal:_tabletSpacingHorizontal,
         ),
         child: Column(
           children: <Widget>[
