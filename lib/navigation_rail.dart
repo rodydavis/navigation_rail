@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const _tabletBreakpoint = 720.0;
 const _desktopBreakpoint = 1440.0;
 const _minHeight = 400.0;
-const _tabletSpacingVertical = 15.0;
+const _tabletSpacingVertical = 8.0;
 const _tabletSpacingHorizontial = 10.0;
 const _drawerWidth = 304.0;
 
@@ -112,7 +112,7 @@ class NavigationRail extends StatelessWidget {
                         if (floatingActionButton != null) ...[
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                              vertical: _tabletSpacingVertical,
+                              vertical: _tabletSpacingVertical * 2,
                               horizontal: _tabletSpacingHorizontial,
                             ),
                             child: floatingActionButton,
@@ -122,7 +122,6 @@ class NavigationRail extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                               vertical: _tabletSpacingVertical,
-                              horizontal: _tabletSpacingHorizontial,
                             ),
                             child: _buildTab(currentIndex == tabs.indexOf(tab),
                                 context, tab),
@@ -194,15 +193,21 @@ class NavigationRail extends StatelessWidget {
     }
     return InkWell(
       onTap: () => onTap(tabs.indexOf(item)),
-      child: Column(
-        children: <Widget>[
-          _icon,
-          Container(height: 4.0),
-          DefaultTextStyle(
-            style: TextStyle(color: _color),
-            child: item?.title,
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: _tabletSpacingVertical,
+          horizontal:_tabletSpacingHorizontial,
+        ),
+        child: Column(
+          children: <Widget>[
+            _icon,
+            Container(height: 4.0),
+            DefaultTextStyle(
+              style: TextStyle(color: _color),
+              child: item?.title,
+            ),
+          ],
+        ),
       ),
     );
   }
