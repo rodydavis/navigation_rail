@@ -24,6 +24,7 @@ class NavigationRail extends StatelessWidget {
   final Color bottomNavigationBarSelectedColor,
       bottomNavigationBarUnselectedColor;
   final bool isDense;
+  final bool hideTitleBar;
 
   const NavigationRail({
     Key key,
@@ -45,6 +46,7 @@ class NavigationRail extends StatelessWidget {
     this.bottomNavigationBarSelectedColor,
     this.bottomNavigationBarUnselectedColor,
     this.minHeight = _minHeight,
+    this.hideTitleBar = false,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -70,11 +72,13 @@ class NavigationRail extends StatelessWidget {
                       children: <Widget>[
                         Positioned.fill(
                           child: Scaffold(
-                            appBar: AppBar(
-                              title: title,
-                              actions: actions,
-                              automaticallyImplyLeading: false,
-                            ),
+                            appBar: hideTitleBar
+                                ? null
+                                : AppBar(
+                                    title: title,
+                                    actions: actions,
+                                    automaticallyImplyLeading: false,
+                                  ),
                             body: body,
                           ),
                         ),
@@ -98,11 +102,13 @@ class NavigationRail extends StatelessWidget {
           if (dimens.maxWidth >= tabletBreakpoint &&
               dimens.maxHeight > minHeight) {
             return Scaffold(
-              appBar: AppBar(
-                title: title,
-                actions: actions,
-                automaticallyImplyLeading: true,
-              ),
+              appBar: hideTitleBar
+                  ? null
+                  : AppBar(
+                      title: title,
+                      actions: actions,
+                      automaticallyImplyLeading: true,
+                    ),
               drawer: drawerHeaderBuilder != null || drawerFooterBuilder != null
                   ? _buildDrawer(context, false)
                   : null,
@@ -114,15 +120,18 @@ class NavigationRail extends StatelessWidget {
                       children: <Widget>[
                         if (floatingActionButton != null)
                           Container(
-                            padding: const EdgeInsets.only(top: _tabletSpacingVertical),
+                            padding: const EdgeInsets.only(
+                                top: _tabletSpacingVertical),
                             width: _railSize,
                             height: _railSize,
                             child: Center(child: floatingActionButton),
                           ),
-                        Container(padding: const EdgeInsets.only(top: _tabletSpacingVertical)),
+                        Container(
+                            padding: const EdgeInsets.only(
+                                top: _tabletSpacingVertical)),
                         for (var tab in tabs)
-                          _buildTab(currentIndex == tabs.indexOf(tab),
-                              context, tab),
+                          _buildTab(
+                              currentIndex == tabs.indexOf(tab), context, tab),
                       ],
                     ),
                   ),
@@ -132,11 +141,13 @@ class NavigationRail extends StatelessWidget {
             );
           }
           return Scaffold(
-            appBar: AppBar(
-              title: title,
-              actions: actions,
-              automaticallyImplyLeading: true,
-            ),
+            appBar: hideTitleBar
+                ? null
+                : AppBar(
+                    title: title,
+                    actions: actions,
+                    automaticallyImplyLeading: true,
+                  ),
             drawer: drawerHeaderBuilder != null || drawerFooterBuilder != null
                 ? _buildDrawer(context, false)
                 : null,
