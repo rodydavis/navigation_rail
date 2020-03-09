@@ -25,12 +25,14 @@ class NavigationRail extends StatelessWidget {
       bottomNavigationBarUnselectedColor;
   final bool isDense;
   final bool hideTitleBar;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   const NavigationRail({
     Key key,
     @required this.currentIndex,
     @required this.tabs,
     @required this.onTap,
+    this.scaffoldKey,
     this.actions,
     this.isDense = false,
     this.floatingActionButton,
@@ -72,6 +74,7 @@ class NavigationRail extends StatelessWidget {
                       children: <Widget>[
                         Positioned.fill(
                           child: Scaffold(
+                            key: scaffoldKey,
                             appBar: hideTitleBar
                                 ? null
                                 : AppBar(
@@ -102,6 +105,7 @@ class NavigationRail extends StatelessWidget {
           if (dimens.maxWidth >= tabletBreakpoint &&
               dimens.maxHeight > minHeight) {
             return Scaffold(
+              key: scaffoldKey,
               appBar: hideTitleBar
                   ? null
                   : AppBar(
@@ -141,6 +145,7 @@ class NavigationRail extends StatelessWidget {
             );
           }
           return Scaffold(
+            key: scaffoldKey,
             appBar: hideTitleBar
                 ? null
                 : AppBar(
