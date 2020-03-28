@@ -1,20 +1,25 @@
-## [1.0.4]
+## 1.5.0
 
-* Fixed isDense Tap Target
+- Renamed to [NavRail] because Flutter released [NavigationRail] on the master channel
+- https://github.com/flutter/flutter/pull/49574
 
-## [1.0.3]
+## 1.0.4
 
-* Bidirectional for i18n
-* Fixes: https://github.com/rodydavis/navigation_rail/issues/2
+- Fixed isDense Tap Target
 
-## [1.0.2]
+## 1.0.3
 
-* Fix Tablet Colors
+- Bidirectional for i18n
+- Fixes: https://github.com/rodydavis/navigation_rail/issues/2
 
-## [1.0.1]
+## 1.0.2
 
-* Fix Tablet Icon
+- Fix Tablet Colors
 
-## [1.0.0]
+## 1.0.1
 
-* First Version
+- Fix Tablet Icon
+
+## 1.0.0
+
+- First Version

@@ -1,8 +1,8 @@
 name: navigation_rail
 description: A Navigation Rail for Flutter
-version: 1.0.4+2
+version: 1.5.0
 author: Rody Davis <rody.davis.jr@gmail.com>
-maintainer: Rody Davis (@AppleEducate)
+maintainer: Rody Davis (@rodydavis)
 homepage: https://github.com/rodydavis/navigation_rail
 
 environment:

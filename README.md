@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationRail(
+    return NavRail(
       drawerHeaderBuilder: (context) {
         return Column(
           children: <Widget>[

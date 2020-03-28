@@ -4,12 +4,11 @@ const _tabletBreakpoint = 720.0;
 const _desktopBreakpoint = 1440.0;
 const _minHeight = 400.0;
 const _tabletSpacingVertical = 8.0;
-const _tabletSpacingHorizontal = 10.0;
 const _drawerWidth = 304.0;
 const _railSize = 72.0;
 const _denseRailSize = 56.0;
 
-class NavigationRail extends StatelessWidget {
+class NavRail extends StatelessWidget {
   final FloatingActionButton floatingActionButton;
   final int currentIndex;
   final Widget body;
@@ -27,7 +26,7 @@ class NavigationRail extends StatelessWidget {
   final bool hideTitleBar;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const NavigationRail({
+  const NavRail({
     Key key,
     @required this.currentIndex,
     @required this.tabs,
