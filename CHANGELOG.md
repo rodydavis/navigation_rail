@@ -1,3 +1,8 @@
+## 1.6.0
+
+- Adopting [NavigationRail] and making adaptive Scaffold
+- Fixed Drawer Footer
+
 ## 1.5.0
 
 - Renamed to [NavRail] because Flutter released [NavigationRail] on the master channel

@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 const _tabletBreakpoint = 720.0;
 const _desktopBreakpoint = 1440.0;
 const _minHeight = 400.0;
-const _tabletSpacingVertical = 8.0;
-const _drawerWidth = 304.0;
+const _drawerWidth = 270.0;
 const _railSize = 72.0;
 const _denseRailSize = 56.0;
 
@@ -55,8 +54,6 @@ class NavRail extends StatelessWidget {
       textDirection: Directionality.of(context),
       child: LayoutBuilder(
         builder: (_, dimens) {
-          final _direction = Directionality.of(context);
-          final isRtl = _direction == TextDirection.rtl;
           if (dimens.maxWidth >= desktopBreakpoint &&
               dimens.maxHeight > minHeight) {
             return Material(
@@ -68,33 +65,19 @@ class NavRail extends StatelessWidget {
                     child: _buildDrawer(context, true),
                   ),
                   Expanded(
-                    child: Stack(
-                      alignment: Alignment.topCenter,
-                      children: <Widget>[
-                        Positioned.fill(
-                          child: Scaffold(
-                            key: scaffoldKey,
-                            appBar: hideTitleBar
-                                ? null
-                                : AppBar(
-                                    title: title,
-                                    actions: actions,
-                                    automaticallyImplyLeading: false,
-                                  ),
-                            body: body,
-                          ),
-                        ),
-                        if (floatingActionButton != null) ...[
-                          Positioned(
-                            top: kToolbarHeight - kToolbarHeight / 2,
-                            right: isRtl ? null : kToolbarHeight / 2,
-                            left: !isRtl ? null : kToolbarHeight / 2,
-                            child: floatingActionButton,
-                            width: 50,
-                            height: 50,
-                          )
-                        ],
-                      ],
+                    child: Scaffold(
+                      key: scaffoldKey,
+                      floatingActionButton: floatingActionButton,
+                      floatingActionButtonLocation:
+                          FloatingActionButtonLocation.startTop,
+                      appBar: hideTitleBar
+                          ? null
+                          : AppBar(
+                              title: title,
+                              actions: actions,
+                              automaticallyImplyLeading: false,
+                            ),
+                      body: body,
                     ),
                   ),
                 ],
@@ -115,29 +98,11 @@ class NavRail extends StatelessWidget {
               drawer: drawerHeaderBuilder != null || drawerFooterBuilder != null
                   ? _buildDrawer(context, false)
                   : null,
+              floatingActionButton: floatingActionButton,
+              floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
               body: Row(
                 children: <Widget>[
-                  Container(
-                    width: isDense ? _denseRailSize : _railSize,
-                    child: Column(
-                      children: <Widget>[
-                        if (floatingActionButton != null)
-                          Container(
-                            padding: const EdgeInsets.only(
-                                top: _tabletSpacingVertical),
-                            width: _railSize,
-                            height: _railSize,
-                            child: Center(child: floatingActionButton),
-                          ),
-                        Container(
-                            padding: const EdgeInsets.only(
-                                top: _tabletSpacingVertical)),
-                        for (var tab in tabs)
-                          _buildTab(
-                              currentIndex == tabs.indexOf(tab), context, tab),
-                      ],
-                    ),
-                  ),
+                  buildRail(context, false),
                   Expanded(child: body),
                 ],
               ),
@@ -173,91 +138,47 @@ class NavRail extends StatelessWidget {
     );
   }
 
-  Widget _buildTab(
-      bool selected, BuildContext context, BottomNavigationBarItem item) {
-    final _theme = Theme.of(context);
-    final _isDark = _theme.brightness == Brightness.dark;
-    final _color = selected
-        ? _isDark ? Colors.tealAccent[200] : _theme.primaryColor
-        : Colors.grey;
-    final _iconTheme = IconThemeData(
-      color: _color,
-      size: _theme.iconTheme.size,
-      opacity: _theme.iconTheme.opacity,
-    );
-    final _icon = Align(
-      alignment: Alignment.topCenter,
-      heightFactor: 1.0,
-      child: IconTheme(
-        data: _iconTheme,
-        child: selected ? item.activeIcon : item.icon,
+  NavigationRail buildRail(BuildContext context, bool extended) {
+    return NavigationRail(
+      extended: extended,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      minWidth: isDense ? _denseRailSize : _railSize,
+      selectedIconTheme: IconThemeData(
+        color: Theme.of(context).accentColor,
       ),
-    );
-    if (isDense) {
-      return Container(
-        height: _denseRailSize,
-        width: _denseRailSize,
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: InkWell(
-            onTap: () => onTap(tabs.indexOf(item)),
-            child: Center(
-              child: _icon,
-            ),
-          ),
-        ),
-      );
-    }
-    return Container(
-      height: _railSize,
-      width: _railSize,
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: InkWell(
-          onTap: () => onTap(tabs.indexOf(item)),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _icon,
-                Container(height: 4.0),
-                DefaultTextStyle(
-                  style: TextStyle(color: _color),
-                  child: item?.title,
-                ),
-              ],
-            ),
-          ),
-        ),
+      selectedLabelTextStyle: TextStyle(
+        color: Theme.of(context).accentColor,
       ),
+      unselectedIconTheme: IconThemeData(
+        color: Colors.grey,
+      ),
+      labelType: extended ? null : NavigationRailLabelType.all,
+      selectedIndex: currentIndex,
+      onDestinationSelected: (val) => onTap(val),
+      destinations: tabs
+          .map((e) => NavigationRailDestination(
+                label: e.title,
+                icon: e.icon,
+              ))
+          .toList(),
     );
   }
 
   Widget _buildDrawer(BuildContext context, bool showTabs) {
     return Drawer(
       child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              if (drawerHeaderBuilder != null) ...[
-                drawerHeaderBuilder(context),
-              ],
-              if (showTabs) ...[
-                for (var tab in tabs) ...[
-                  ListTile(
-                    dense: isDense,
-                    selected: currentIndex == tabs.indexOf(tab),
-                    leading: tab?.icon,
-                    title: tab?.title,
-                    onTap: () => onTap(tabs.indexOf(tab)),
-                  ),
-                ]
-              ],
-              if (drawerFooterBuilder != null) ...[
-                drawerFooterBuilder(context),
-              ],
+        child: Column(
+          children: <Widget>[
+            if (drawerHeaderBuilder != null) ...[
+              drawerHeaderBuilder(context),
             ],
-          ),
+            if (showTabs) ...[
+              Expanded(child: buildRail(context, true)),
+            ],
+            if (drawerFooterBuilder != null) ...[
+              drawerFooterBuilder(context),
+            ],
+          ],
         ),
       ),
     );
