@@ -157,7 +157,7 @@ class NavRail extends StatelessWidget {
       onDestinationSelected: (val) => onTap(val),
       destinations: tabs
           .map((e) => NavigationRailDestination(
-                label: e.title,
+                label: e.title ?? Text(e.label),
                 icon: e.icon,
               ))
           .toList(),
