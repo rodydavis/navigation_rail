@@ -23,6 +23,7 @@ class NavRail extends StatelessWidget {
       bottomNavigationBarUnselectedColor;
   final bool isDense;
   final bool hideTitleBar;
+  final bool hideBottomNavigationBar;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   const NavRail({
@@ -47,6 +48,7 @@ class NavRail extends StatelessWidget {
     this.bottomNavigationBarUnselectedColor,
     this.minHeight = _minHeight,
     this.hideTitleBar = false,
+    this.hideBottomNavigationBar = false,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -123,15 +125,17 @@ class NavRail extends StatelessWidget {
             body: body,
             floatingActionButton: floatingActionButton,
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-            bottomNavigationBar: BottomNavigationBar(
-              type: bottomNavigationBarType,
-              backgroundColor: bottomNavigationBarColor,
-              currentIndex: currentIndex,
-              onTap: onTap,
-              items: tabs,
-              unselectedItemColor: bottomNavigationBarUnselectedColor,
-              selectedItemColor: bottomNavigationBarSelectedColor,
-            ),
+            bottomNavigationBar: hideBottomNavigationBar
+                ? null
+                : BottomNavigationBar(
+                    type: bottomNavigationBarType,
+                    backgroundColor: bottomNavigationBarColor,
+                    currentIndex: currentIndex,
+                    onTap: onTap,
+                    items: tabs,
+                    unselectedItemColor: bottomNavigationBarUnselectedColor,
+                    selectedItemColor: bottomNavigationBarSelectedColor,
+                  ),
           );
         },
       ),
