@@ -24,6 +24,9 @@ class NavRail extends StatelessWidget {
   final bool isDense;
   final bool hideTitleBar;
   final bool hideBottomNavigationBar;
+  final double navigationRailElevation;
+  final double drawerElevation;
+  final NavigationRailLabelType navigationRailLabelType;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   const NavRail({
@@ -40,6 +43,7 @@ class NavRail extends StatelessWidget {
     this.body,
     this.title,
     this.bottomNavigationBarColor,
+    this.navigationRailLabelType,
     this.tabletBreakpoint = _tabletBreakpoint,
     this.desktopBreakpoint = _desktopBreakpoint,
     this.drawerWidth = _drawerWidth,
@@ -49,6 +53,8 @@ class NavRail extends StatelessWidget {
     this.minHeight = _minHeight,
     this.hideTitleBar = false,
     this.hideBottomNavigationBar = false,
+    this.navigationRailElevation = 0.0,
+    this.drawerElevation = 0.0,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -142,7 +148,11 @@ class NavRail extends StatelessWidget {
     );
   }
 
-  NavigationRail buildRail(BuildContext context, bool extended) {
+  Widget buildRail(
+    BuildContext context,
+    bool extended, {
+    bool isDrawer = false,
+  }) {
     return NavigationRail(
       extended: extended,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -156,14 +166,20 @@ class NavRail extends StatelessWidget {
       unselectedIconTheme: IconThemeData(
         color: Colors.grey,
       ),
-      labelType: extended ? null : NavigationRailLabelType.all,
+      labelType: isDrawer
+          ? extended
+              ? null
+              : NavigationRailLabelType.all
+          : this.navigationRailLabelType ?? NavigationRailLabelType.all,
       selectedIndex: currentIndex,
       onDestinationSelected: (val) => onTap(val),
       destinations: tabs
-          .map((e) => NavigationRailDestination(
-                label: Text(e.label),
-                icon: e.icon,
-              ))
+          .map(
+            (e) => NavigationRailDestination(
+              label: Text(e.label),
+              icon: e.icon,
+            ),
+          )
           .toList(),
     );
   }
@@ -177,7 +193,13 @@ class NavRail extends StatelessWidget {
               drawerHeaderBuilder(context),
             ],
             if (showTabs) ...[
-              Expanded(child: buildRail(context, true)),
+              Expanded(
+                child: buildRail(
+                  context,
+                  true,
+                  isDrawer: true,
+                ),
+              ),
             ],
             if (drawerFooterBuilder != null) ...[
               drawerFooterBuilder(context),
