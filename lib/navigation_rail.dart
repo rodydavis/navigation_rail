@@ -8,28 +8,28 @@ const _railSize = 72.0;
 const _denseRailSize = 56.0;
 
 class NavRail extends StatelessWidget {
-  final FloatingActionButton floatingActionButton;
+  final FloatingActionButton? floatingActionButton;
   final int currentIndex;
-  final Widget body;
-  final Widget title;
+  final Widget? body;
+  final Widget? title;
   final ValueChanged<int> onTap;
   final List<BottomNavigationBarItem> tabs;
-  final WidgetBuilder drawerHeaderBuilder, drawerFooterBuilder;
-  final Color bottomNavigationBarColor;
+  final WidgetBuilder? drawerHeaderBuilder, drawerFooterBuilder;
+  final Color? bottomNavigationBarColor;
   final double tabletBreakpoint, desktopBreakpoint, minHeight, drawerWidth;
-  final List<Widget> actions;
+  final List<Widget>? actions;
   final BottomNavigationBarType bottomNavigationBarType;
-  final Color bottomNavigationBarSelectedColor,
+  final Color? bottomNavigationBarSelectedColor,
       bottomNavigationBarUnselectedColor;
   final bool isDense;
   final bool hideTitleBar;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
 
   const NavRail({
-    Key key,
-    @required this.currentIndex,
-    @required this.tabs,
-    @required this.onTap,
+    Key? key,
+    required this.currentIndex,
+    required this.tabs,
+    required this.onTap,
     this.scaffoldKey,
     this.actions,
     this.isDense = false,
@@ -103,7 +103,7 @@ class NavRail extends StatelessWidget {
               body: Row(
                 children: <Widget>[
                   buildRail(context, false),
-                  Expanded(child: body),
+                  Expanded(child: body!),
                 ],
               ),
             );
@@ -157,7 +157,7 @@ class NavRail extends StatelessWidget {
       onDestinationSelected: (val) => onTap(val),
       destinations: tabs
           .map((e) => NavigationRailDestination(
-                label: e.title,
+                label: Text(e.label!),
                 icon: e.icon,
               ))
           .toList(),
@@ -170,13 +170,13 @@ class NavRail extends StatelessWidget {
         child: Column(
           children: <Widget>[
             if (drawerHeaderBuilder != null) ...[
-              drawerHeaderBuilder(context),
+              drawerHeaderBuilder!(context),
             ],
             if (showTabs) ...[
               Expanded(child: buildRail(context, true)),
             ],
             if (drawerFooterBuilder != null) ...[
-              drawerFooterBuilder(context),
+              drawerFooterBuilder!(context),
             ],
           ],
         ),
