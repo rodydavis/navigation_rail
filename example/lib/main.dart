@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       appBarTheme: base.appBarTheme.copyWith(elevation: 0.0),
       floatingActionButtonTheme: base.floatingActionButtonTheme.copyWith(
         elevation: 2.0,
-        backgroundColor: base.accentColor,
+        backgroundColor: base.colorScheme.primary,
       ),
     );
   }
@@ -96,19 +96,19 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       tabs: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          title: Text("Folders"),
+          label: "Folders",
           icon: Icon(Icons.folder),
         ),
         BottomNavigationBarItem(
-          title: Text("History"),
+          label: "History",
           icon: Icon(Icons.history),
         ),
         BottomNavigationBarItem(
-          title: Text("Gallery"),
+          label: "Gallery",
           icon: Icon(Icons.photo_library),
         ),
         BottomNavigationBarItem(
-          title: Text("Camera"),
+          label: "Camera",
           icon: Icon(Icons.camera),
         ),
       ],

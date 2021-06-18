@@ -158,10 +158,10 @@ class NavRail extends StatelessWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       minWidth: isDense ? _denseRailSize : _railSize,
       selectedIconTheme: IconThemeData(
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.primary,
       ),
       selectedLabelTextStyle: TextStyle(
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.primary,
       ),
       unselectedIconTheme: IconThemeData(
         color: Colors.grey,
