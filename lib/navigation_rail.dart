@@ -60,10 +60,7 @@ class NavRail extends StatelessWidget {
               color: Theme.of(context).scaffoldBackgroundColor,
               child: Row(
                 children: <Widget>[
-                  Container(
-                    width: _drawerWidth,
-                    child: _buildDrawer(context, true),
-                  ),
+                  _buildDrawer(context, true),
                   Expanded(
                     child: Scaffold(
                       key: scaffoldKey,
@@ -142,32 +139,34 @@ class NavRail extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext p0, BoxConstraints p1) {
         return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: p1.maxHeight +100),
+          child: Container(
+            margin: const EdgeInsets.all(10),
             child: Row(
               children: [
-                NavigationRail(
-                  extended: extended,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  minWidth: isDense ? _denseRailSize : _railSize,
-                  selectedIconTheme: IconThemeData(
-                    color: Theme.of(context).accentColor,
+                IntrinsicHeight(
+                  child: NavigationRail(
+                    extended: extended,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    minWidth: isDense ? _denseRailSize : _railSize,
+                    selectedIconTheme: IconThemeData(
+                      color: Theme.of(context).accentColor,
+                    ),
+                    selectedLabelTextStyle: TextStyle(
+                      color: Theme.of(context).accentColor,
+                    ),
+                    unselectedIconTheme: IconThemeData(
+                      color: Colors.grey,
+                    ),
+                    labelType: extended ? null : NavigationRailLabelType.all,
+                    selectedIndex: currentIndex,
+                    onDestinationSelected: (val) => onTap(val),
+                    destinations: tabs
+                        .map((e) => NavigationRailDestination(
+                              label: Text(e.label!),
+                              icon: e.icon,
+                            ))
+                        .toList(),
                   ),
-                  selectedLabelTextStyle: TextStyle(
-                    color: Theme.of(context).accentColor,
-                  ),
-                  unselectedIconTheme: IconThemeData(
-                    color: Colors.grey,
-                  ),
-                  labelType: extended ? null : NavigationRailLabelType.all,
-                  selectedIndex: currentIndex,
-                  onDestinationSelected: (val) => onTap(val),
-                  destinations: tabs
-                      .map((e) => NavigationRailDestination(
-                            label: Text(e.label!),
-                            icon: e.icon,
-                          ))
-                      .toList(),
                 ),
               ],
             ),
