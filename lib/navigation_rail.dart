@@ -138,29 +138,42 @@ class NavRail extends StatelessWidget {
     );
   }
 
-  NavigationRail buildRail(BuildContext context, bool extended) {
-    return NavigationRail(
-      extended: extended,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      minWidth: isDense ? _denseRailSize : _railSize,
-      selectedIconTheme: IconThemeData(
-        color: Theme.of(context).accentColor,
-      ),
-      selectedLabelTextStyle: TextStyle(
-        color: Theme.of(context).accentColor,
-      ),
-      unselectedIconTheme: IconThemeData(
-        color: Colors.grey,
-      ),
-      labelType: extended ? null : NavigationRailLabelType.all,
-      selectedIndex: currentIndex,
-      onDestinationSelected: (val) => onTap(val),
-      destinations: tabs
-          .map((e) => NavigationRailDestination(
-                label: Text(e.label!),
-                icon: e.icon,
-              ))
-          .toList(),
+  Widget buildRail(BuildContext context, bool extended) {
+    return LayoutBuilder(
+      builder: (BuildContext p0, BoxConstraints p1) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: p1.maxHeight +100),
+            child: Row(
+              children: [
+                NavigationRail(
+                  extended: extended,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  minWidth: isDense ? _denseRailSize : _railSize,
+                  selectedIconTheme: IconThemeData(
+                    color: Theme.of(context).accentColor,
+                  ),
+                  selectedLabelTextStyle: TextStyle(
+                    color: Theme.of(context).accentColor,
+                  ),
+                  unselectedIconTheme: IconThemeData(
+                    color: Colors.grey,
+                  ),
+                  labelType: extended ? null : NavigationRailLabelType.all,
+                  selectedIndex: currentIndex,
+                  onDestinationSelected: (val) => onTap(val),
+                  destinations: tabs
+                      .map((e) => NavigationRailDestination(
+                            label: Text(e.label!),
+                            icon: e.icon,
+                          ))
+                      .toList(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
