@@ -115,7 +115,7 @@ class NavRail extends StatelessWidget {
                     automaticallyImplyLeading: true,
                   ),
             drawer: drawerHeaderBuilder != null || drawerFooterBuilder != null
-                ? _buildDrawer(context, false)
+                ? _buildDrawer(context, true)
                 : null,
             body: body,
             floatingActionButton: floatingActionButton,
@@ -143,38 +143,44 @@ class NavRail extends StatelessWidget {
           child: SingleChildScrollView(
             child: Row(
               children: [
-                Expanded(
-                  child: IntrinsicHeight(
-                    child: NavigationRail(
-                      extended: extended,
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                      minWidth: isDense ? _denseRailSize : _railSize,
-                      selectedIconTheme: IconThemeData(
-                        color: Theme.of(context).accentColor,
-                      ),
-                      selectedLabelTextStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                      ),
-                      unselectedIconTheme: IconThemeData(
-                        color: Colors.grey,
-                      ),
-                      labelType: extended ? null : NavigationRailLabelType.all,
-                      selectedIndex: currentIndex,
-                      onDestinationSelected: (val) => onTap(val),
-                      destinations: tabs
-                          .map((e) => NavigationRailDestination(
-                                label: Text(e.label!),
-                                icon: e.icon,
-                              ))
-                          .toList(),
-                    ),
+                if (!extended) _rail(extended, context),
+                if (extended)
+                  Expanded(
+                    child: _rail(extended, context),
                   ),
-                ),
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _rail(bool extended, BuildContext context) {
+    return IntrinsicHeight(
+      child: NavigationRail(
+        extended: extended,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        minWidth: isDense ? _denseRailSize : _railSize,
+        selectedIconTheme: IconThemeData(
+          color: Theme.of(context).accentColor,
+        ),
+        selectedLabelTextStyle: TextStyle(
+          color: Theme.of(context).accentColor,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: Colors.grey,
+        ),
+        labelType: extended ? null : NavigationRailLabelType.all,
+        selectedIndex: currentIndex,
+        onDestinationSelected: (val) => onTap(val),
+        destinations: tabs
+            .map((e) => NavigationRailDestination(
+                  label: Text(e.label!),
+                  icon: e.icon,
+                ))
+            .toList(),
+      ),
     );
   }
 
@@ -187,7 +193,7 @@ class NavRail extends StatelessWidget {
               drawerHeaderBuilder!(context),
             ],
             if (showTabs) ...[
-              Expanded(child: buildRail(context, true)),
+              Expanded(child: buildRail(context, showTabs)),
             ],
             if (drawerFooterBuilder != null) ...[
               drawerFooterBuilder!(context),
