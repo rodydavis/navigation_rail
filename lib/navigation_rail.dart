@@ -60,10 +60,7 @@ class NavRail extends StatelessWidget {
               color: Theme.of(context).scaffoldBackgroundColor,
               child: Row(
                 children: <Widget>[
-                  Container(
-                    width: _drawerWidth,
-                    child: _buildDrawer(context, true),
-                  ),
+                  _buildDrawer(context, true),
                   Expanded(
                     child: Scaffold(
                       key: scaffoldKey,
@@ -118,7 +115,7 @@ class NavRail extends StatelessWidget {
                     automaticallyImplyLeading: true,
                   ),
             drawer: drawerHeaderBuilder != null || drawerFooterBuilder != null
-                ? _buildDrawer(context, false)
+                ? _buildDrawer(context, true)
                 : null,
             body: body,
             floatingActionButton: floatingActionButton,
@@ -138,29 +135,52 @@ class NavRail extends StatelessWidget {
     );
   }
 
-  NavigationRail buildRail(BuildContext context, bool extended) {
-    return NavigationRail(
-      extended: extended,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      minWidth: isDense ? _denseRailSize : _railSize,
-      selectedIconTheme: IconThemeData(
-        color: Theme.of(context).accentColor,
+  Widget buildRail(BuildContext context, bool extended) {
+    return LayoutBuilder(
+      builder: (BuildContext p0, BoxConstraints p1) {
+        return Padding(
+          padding: const EdgeInsets.all(5),
+          child: SingleChildScrollView(
+            child: Row(
+              children: [
+                if (!extended) _rail(extended, context),
+                if (extended)
+                  Expanded(
+                    child: _rail(extended, context),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _rail(bool extended, BuildContext context) {
+    return IntrinsicHeight(
+      child: NavigationRail(
+        extended: extended,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        minWidth: isDense ? _denseRailSize : _railSize,
+        selectedIconTheme: IconThemeData(
+          color: Theme.of(context).accentColor,
+        ),
+        selectedLabelTextStyle: TextStyle(
+          color: Theme.of(context).accentColor,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: Colors.grey,
+        ),
+        labelType: extended ? null : NavigationRailLabelType.all,
+        selectedIndex: currentIndex,
+        onDestinationSelected: (val) => onTap(val),
+        destinations: tabs
+            .map((e) => NavigationRailDestination(
+                  label: Text(e.label!),
+                  icon: e.icon,
+                ))
+            .toList(),
       ),
-      selectedLabelTextStyle: TextStyle(
-        color: Theme.of(context).accentColor,
-      ),
-      unselectedIconTheme: IconThemeData(
-        color: Colors.grey,
-      ),
-      labelType: extended ? null : NavigationRailLabelType.all,
-      selectedIndex: currentIndex,
-      onDestinationSelected: (val) => onTap(val),
-      destinations: tabs
-          .map((e) => NavigationRailDestination(
-                label: Text(e.label!),
-                icon: e.icon,
-              ))
-          .toList(),
     );
   }
 
@@ -173,7 +193,7 @@ class NavRail extends StatelessWidget {
               drawerHeaderBuilder!(context),
             ],
             if (showTabs) ...[
-              Expanded(child: buildRail(context, true)),
+              Expanded(child: buildRail(context, showTabs)),
             ],
             if (drawerFooterBuilder != null) ...[
               drawerFooterBuilder!(context),
